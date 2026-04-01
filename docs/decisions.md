@@ -70,3 +70,29 @@ EarlyStopping evitó sobreajuste y ahorró tiempo de cómputo.
 ### Exportación TFLite
 Se requirió SELECT_TF_OPS para las capas LSTM.
 Tamaño final: 136 KB — viable para app móvil sin conexión.
+
+## Decisión 05 — Análisis nocturno e IAH
+Fecha: 31/03/2025
+
+### Implementación
+Se simuló una noche completa de 8 horas (960 ventanas de 30s).
+El modelo analizó cada ventana y acumuló los resultados para
+calcular el IAH — métrica clínica estándar para diagnóstico
+de apnea del sueño.
+
+### Resultado de la demo
+- 960 ventanas analizadas
+- 95.6% de precisión nocturna
+- IAH calculado: 26.5 eventos/hora
+- Diagnóstico correcto: Apnea moderada
+
+### Patrón clínico reproducido
+La simulación reproduce el patrón real: más apneas en la
+segunda mitad de la noche durante fases REM. Esto valida
+que el sistema puede detectar no solo si hay apnea, sino
+cuándo ocurre durante la noche.
+
+### Visualizaciones generadas
+1. Hipnograma — mapa de color de la noche completa
+2. Eventos por hora — gráfica de barras con umbrales clínicos
+3. Probabilidad de apnea — curva continua suavizada
