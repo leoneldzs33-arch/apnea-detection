@@ -45,3 +45,28 @@ cambiará a 2, sin modificar la arquitectura del modelo.
 Se guarda el scaler entrenado para usarlo en la app móvil.
 Es crítico aplicar exactamente la misma normalización a los
 datos reales del Arduino, de lo contrario el modelo falla.
+
+## Decisión 03 — Arquitectura LSTM y resultados
+Fecha: 31/03/2025
+
+### Arquitectura elegida
+LSTM(64) → Dropout(0.2) → LSTM(32) → Dropout(0.2) → Dense(16) → Dense(3)
+Total: 29,891 parámetros — modelo compacto para uso en móvil.
+
+### Resultados
+- Accuracy general: 93.3%
+- Recall apnea severa: 100% (ningún caso severo no detectado)
+- Recall apnea leve: 74% (margen de mejora con datos reales)
+
+### Por qué LSTM y no otra arquitectura
+Las señales respiratorias son secuencias temporales donde el
+contexto importa. Una pausa solo es apnea si dura más de 10
+segundos — LSTM recuerda ese contexto, una red densa no.
+
+### EarlyStopping en época 28
+El modelo encontró su mejor punto en la época 28 de 50.
+EarlyStopping evitó sobreajuste y ahorró tiempo de cómputo.
+
+### Exportación TFLite
+Se requirió SELECT_TF_OPS para las capas LSTM.
+Tamaño final: 136 KB — viable para app móvil sin conexión.
