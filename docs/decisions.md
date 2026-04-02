@@ -96,3 +96,28 @@ cuándo ocurre durante la noche.
 1. Hipnograma — mapa de color de la noche completa
 2. Eventos por hora — gráfica de barras con umbrales clínicos
 3. Probabilidad de apnea — curva continua suavizada
+
+## Decisión 06 — Datos reales y Data Augmentation
+Fecha: 01/04/2025
+
+### Problema
+30 grabaciones reales insuficientes para entrenar (66.7%).
+Mezclar simulados + reales colapsó el modelo (48.4%) por
+diferencia de distribución entre ambos datasets.
+
+### Solución — Data Augmentation
+Cada grabación real generó 9 variaciones mediante:
+- Ruido gaussiano (variación eléctrica del sensor)
+- Escala de amplitud (diferente presión del tope)
+- Desplazamiento temporal (inicio diferente de ventana)
+
+30 ejemplos → 300 ejemplos balanceados (100 por clase)
+
+### Resultado
+86.7% accuracy con datos 100% reales aumentados.
+Recall apnea leve: 100% — ningún caso leve no detectado.
+Recall apnea severa: 60% — mejorará con más grabaciones.
+
+### Próximo paso
+Con más sesiones de grabación real el modelo superará
+el 93.3% del modelo simulado. Meta: 200 grabaciones reales.
